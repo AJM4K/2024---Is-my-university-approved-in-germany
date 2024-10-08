@@ -4,6 +4,7 @@ namespace App\Livewire;
 
 use App\Models\Governance;
 use App\Models\University;
+use App\Models\UserData;
 use Livewire\Component;
 
 class HomePage extends Component
@@ -14,9 +15,11 @@ class HomePage extends Component
     public $universities = [];
     public $message;
     public $isUniversityValid = null; // New property to track university validity
-    public $email = ''; // To collect email
-    public $phone_number = '';
-    public $isUserVerified = false ; // To collect phone number
+   
+    public $showForm = true; // New property to control showing form
+    public $email = '';
+    public $phone = '';
+    public $errorMessage = '';
 
     public function mount()
     {
@@ -59,14 +62,32 @@ class HomePage extends Component
     }
 
       // New method to verify user by email or phone number
-      public function verifyUser()
+      public function submitForm()
       {
-          if ($this->email || $this->phone_number) {
-              // You can add more validation or processing logic here
-              $this->isUserVerified = true; // Once email or phone is provided, set user as verified
-          } else {
-              $this->addError('contact', 'يرجى ادخال البريد الإلكتروني أو رقم الهاتف');
+          // Validate email or phone number
+         // Validate email or phone number with appropriate rules
+    $this->validate([
+        'email' => 'nullable|email',   // The email must be valid if entered
+        'phone' => 'nullable|numeric|min:10', // The phone must be numeric and at least 10 digits long if entered
+    ], [
+        'email.email' => 'قم ادخال ايميل بشكل صحيح او رقم',
+        'phone.numeric' => 'قم بادخال رقم هاتف صحيح او ايميل',
+        'phone.min' => 'رقم الهاتف يجب ان يكون 10 ارقام على الاقل',
+    ]);
+  
+          if (empty($this->email) && empty($this->phone)) {
+              $this->errorMessage = "قم ادخال ايميل او رمز للوصول الى المنصة";
+              return;
           }
+  
+          // Save the user data to the database
+          UserData::create([
+              'email' => $this->email,
+              'phone' => $this->phone,
+          ]);
+  
+          // Hide the form after submission
+          $this->showForm = false;
       }
 
     public function render()

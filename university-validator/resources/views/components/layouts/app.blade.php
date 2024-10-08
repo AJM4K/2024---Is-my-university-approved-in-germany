@@ -7,8 +7,9 @@
         <title>{{ $title ?? 'Page Title' }}</title>
         @vite('resources/css/app.css')
     </head>
-    <body>
-        @include('sections.header')
+    <body class="mx-16">
+       {{-- @include('sections.header') --}} 
+        @include('sections.hero')
         {{ $slot }}
         @include('sections.footer')
     </body>
