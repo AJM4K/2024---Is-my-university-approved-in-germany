@@ -41,7 +41,33 @@ class AddItemMovement extends Component
             'description' => 'nullable|string',
         'movement_type' => 'required|in:in,out',
         ]);
+        $item = Item::find($this->item_id);
+        $check = false ;
         // Create the movement record
+      
+        // Update item quantities based on the movement type
+        if ($this->movement_type === 'in') {
+            $result =  ( $item->in_quantity + $this->quantity) + ( $this->quantity - $item->out_quantity);
+            $check = $result === $item->quantity;
+            if ( !$check){
+                session()->flash('message', ' خطا في الكمية');
+return ;
+            }
+            
+            $item->in_quantity += $this->quantity;
+            $item->out_quantity -= $this->quantity;
+        } else {
+            $result =  ( $item->in_quantity - $this->quantity) + ( $this->quantity + $item->out_quantity);
+            $check = $result === $item->quantity;
+
+            if ( !$check){
+                session()->flash('message', ' خطا في الكمية');
+
+return;            }
+            $item->out_quantity += $this->quantity;
+            $item->in_quantity -= $this->quantity;
+        }
+        $item->save();
         ItemsMovement::create([
             'item_id' => $this->item_id,
             'quantity' => $this->quantity,
@@ -49,16 +75,6 @@ class AddItemMovement extends Component
             'description' => $this->description,
             'status' => $this->movement_type,
         ]);
-        // Update item quantities based on the movement type
-        $item = Item::find($this->item_id);
-        if ($this->movement_type === 'in') {
-            $item->in_quantity += $this->quantity;
-            $item->out_quantity -= $this->quantity;
-        } else {
-            $item->out_quantity += $this->quantity;
-            $item->in_quantity -= $this->quantity;
-        }
-        $item->save();
 
         // Reset the input fields
         $this->reset();

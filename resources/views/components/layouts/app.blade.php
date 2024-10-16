@@ -7,6 +7,8 @@
 
     <title>{{ $title ?? 'نظام المخازن النسخة الاولى' }}</title>
     @vite('resources/css/app.css')
+    <link href="{{ mix('css/app.css') }}" rel="stylesheet">
+
 </head>
 
 <body class="mx-16">

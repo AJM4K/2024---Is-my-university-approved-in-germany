@@ -30,11 +30,12 @@ class ItemList extends Component
     }
 
     public function searching() {
-        $this->items = Item::where('name', '=', $this->search)->get();
-        if($this->search === ''){
-            $this->items = Item::all();
-
+        if ($this->search) {
+            $this->items = Item::where('name', 'like', '%' . $this->search . '%')->get();
+        } else {
+            $this->items = Item::all(); // or some default behavior
         }
+        
     }
     public function render()
     {
