@@ -55,7 +55,8 @@ class ItemResource extends Resource
               //  ->readonly(), // Change disabled() to readonly()
               ->disabled(fn($get) => $get('id') === null),
 
-                
+              Forms\Components\MarkdownEditor::make('description')
+              ->required(),
 
             // Forms\Components\TextInput::make('out_quantity')
             //     ->label('Out Quantity')
@@ -69,6 +70,11 @@ class ItemResource extends Resource
             Forms\Components\Textarea::make('description')
                 ->nullable()
                 ->maxLength(65535),
+                Forms\Components\FileUpload::make('thumbnail')
+                    ->label('Thumbnail')
+                    ->disk('public') // Adjust disk as needed
+                    ->directory('thumbnails')
+                    ->nullable(),
 
                 Forms\Components\TextInput::make('location')
                 ->nullable()

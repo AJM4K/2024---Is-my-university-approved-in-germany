@@ -16,9 +16,9 @@ class AppServiceProvider extends ServiceProvider
         //
     }
 
-    protected $policies = [
-        Item::class => ItemPolicy::class,
-    ];
+    // protected $policies = [
+    //    // Item::class => ItemPolicy::class,
+    // ];
 
     /**
      * Bootstrap any application services.
