@@ -4,6 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\ItemMovementResource\Pages;
 use App\Filament\Resources\ItemMovementResource\RelationManagers;
+use App\Models\Item;
 use App\Models\ItemMovement;
 use App\Models\ItemsMovement;
 use Filament\Forms;
@@ -47,7 +48,6 @@ class ItemMovementResource extends Resource
             ->label('Quantity')
             ->required()
             ->type('number')
-            ->min(1)
             ->reactive()
             ->afterStateUpdated(function ($state, callable $get, callable $set) {
                 $item = Item::find($get('item_id'));

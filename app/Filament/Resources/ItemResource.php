@@ -28,9 +28,26 @@ class ItemResource extends Resource
                 ->required()
                 ->maxLength(255),
             
-            Forms\Components\TextInput::make('quantity')
+                Forms\Components\TextInput::make('quantity')
+                ->label('Quantity')
                 ->required()
+                ->type('number')
+                ->reactive()
+                ->afterStateUpdated(function ($state, callable $get, callable $set) {
+                        $set('in_quantity', $state); // Adjust to available out_quantity
+                        $set('out_quantity', 0); // Adjust to available in_quantity
+                    
+                }),
+            
+                Forms\Components\TextInput::make('in_quantity')
+                ->required()
+                ->type('number')
+                ->disabled(),
+                Forms\Components\TextInput::make('out_quantity')
+                ->required()
+                ->disabled()
                 ->type('number'),
+
                 
 
             Forms\Components\Textarea::make('description')
@@ -50,6 +67,8 @@ class ItemResource extends Resource
             Tables\Columns\TextColumn::make('id'),
             Tables\Columns\TextColumn::make('name'),
             Tables\Columns\TextColumn::make('quantity'),
+            Tables\Columns\TextColumn::make('in_quantity'),
+            Tables\Columns\TextColumn::make('out_quantity'),
             Tables\Columns\TextColumn::make('location'),
             Tables\Columns\TextColumn::make('created_at')
                 ->label('Created At')
