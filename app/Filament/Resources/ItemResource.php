@@ -23,7 +23,10 @@ class ItemResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
-   
+    // public static function canCreate(): bool
+    // {
+    //     return auth()->user()->can('create', Item::class);
+    // }
 
     public static function form(Form $form): Form
     {
@@ -58,8 +61,9 @@ class ItemResource extends Resource
             //     ->label('Out Quantity')
             //     ->type('number')
             //     ->readonly(), // Change disabled() to readonly()
-            Forms\Components\TextInput::make('out_quantity')->default(0)->readOnly(),
-
+            Forms\Components\TextInput::make('out_quantity')->default(0)
+            //->readOnly(),
+            ->disabled(fn($get) => $get('id') === null),
                 
 
             Forms\Components\Textarea::make('description')
