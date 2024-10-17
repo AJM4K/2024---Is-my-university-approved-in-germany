@@ -10,7 +10,8 @@ class ItemsMovement extends Model
     use HasFactory;
 
     protected $fillable = ['item_id', 'quantity', 'location','description',  // New field
-        'status'  ];
+        'status' , 'closed', // Add this line
+         ];
 
     public function item()
     {

@@ -24,7 +24,7 @@ class ItemMovementResource extends Resource
     {
         return 'سجل الحركات'; // Custom sidebar name
     }
-  
+
     public static function form(Forms\Form $form): Forms\Form
     {
         return $form
@@ -34,34 +34,39 @@ class ItemMovementResource extends Resource
                     ->relationship('Item', 'name')
                     ->required(),
 
-                    Forms\Components\Select::make('movement_type')
+                Forms\Components\Select::make('movement_type')
                     ->label('Movement Type')
                     ->options([
                         'in' => 'In',
                         'out' => 'Out',
                     ])
                     ->required(),
-    
-                
-                  
-            Forms\Components\TextInput::make('quantity')
-            ->label('Quantity')
-            ->required()
-            ->type('number')
-            ->reactive()
-            ->afterStateUpdated(function ($state, callable $get, callable $set) {
-                $item = Item::find($get('item_id'));
-                if ($get('movement_type') === 'in' && $state > $item->out_quantity) {
-                    $set('quantity', $item->out_quantity); // Adjust to available out_quantity
-                } elseif ($get('movement_type') === 'out' && $state > $item->in_quantity) {
-                    $set('quantity', $item->in_quantity); // Adjust to available in_quantity
-                }
-            }),
-                    
+
+
+                Forms\Components\TextInput::make('quantity')
+                    ->label('Quantity')
+                    ->required()
+                    ->type('number')
+                    ->reactive()
+                    ->afterStateUpdated(function ($state, callable $get, callable $set) {
+                        $item = Item::find($get('item_id'));
+
+                        // Ensure the item exists before trying to access its properties
+                        if ($item) {
+                            if ($get('movement_type') === 'in' && $state > $item->out_quantity) {
+                                $set('quantity', $item->out_quantity); // Adjust to available quantity
+                            } elseif ($get('movement_type') === 'out' && $state > $item->in_quantity) {
+                                $set('quantity', $item->in_quantity); // Adjust to available in_quantity
+                            }
+                        }
+                    }),
+
 
                 Forms\Components\TextInput::make('location')
                     ->nullable()
                     ->maxLength(255),
+                    Forms\Components\Toggle::make('closed')
+                    ,
             ]);
     }
 
@@ -73,6 +78,7 @@ class ItemMovementResource extends Resource
                 Tables\Columns\TextColumn::make('item.name')->label('Item'),
                 Tables\Columns\TextColumn::make('quantity'),
                 Tables\Columns\TextColumn::make('location'),
+              //  Tables\Columns\TextColumn::make('closed'),
                 Tables\Columns\TextColumn::make('created_at')
                     ->label('Created At')
                     ->dateTime(),
@@ -92,12 +98,17 @@ class ItemMovementResource extends Resource
             ]);
     }
 
+  
+
+
     public static function getPages(): array
     {
         return [
             'index' => Pages\ListItemMovements::route('/'),
             'create' => Pages\CreateItemMovement::route('/create'),
             'edit' => Pages\EditItemMovement::route('/{record}/edit'),
+            'view-item-movements' => Pages\ItemMovementsForItem::route('/item/{itemId}'), // New route
+
         ];
     }
 }
