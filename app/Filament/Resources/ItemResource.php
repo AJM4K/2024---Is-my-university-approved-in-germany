@@ -22,11 +22,20 @@ class ItemResource extends Resource
     protected static ?string $model = Item::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
-
+    protected static ?string $navigationLabel = 'المواد';
     // public static function canCreate(): bool
     // {
     //     return auth()->user()->can('create', Item::class);
     // }
+    public static function getTitle(): string
+    {
+        return 'المواد'; // Replace with your Arabic title
+    }
+    public static function getDescription(): string
+{
+    return 'يمكنك اضافة مواد جديدة و بعدها انشاء حركات في سجل الحركات'; // Replace with your Arabic description
+}
+
 
     public static function form(Form $form): Form
     {

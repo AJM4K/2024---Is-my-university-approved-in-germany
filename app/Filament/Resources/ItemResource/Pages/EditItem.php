@@ -17,11 +17,14 @@ class EditItem extends EditRecord
     protected function getHeaderActions(): array
     {
         return [
-            Actions\DeleteAction::make(),
-            Actions\Action::make('viewMovements')
-            ->label('View Movements')
-            ->url(fn (Item $record) => ItemMovementResource::getUrl('view-item-movements', ['itemId' => $record->id])),
-   
+            Actions\ActionGroup::make([
+                Actions\DeleteAction::make(),
+                Actions\Action::make('viewMovements')
+                ->label('View Movements')
+                ->url(fn (Item $record) => ItemMovementResource::getUrl('view-item-movements', ['itemId' => $record->id])),
+       
+            ]),
+           
             
         ];
     }

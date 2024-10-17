@@ -20,10 +20,16 @@ class ItemMovementResource extends Resource
     protected static ?string $model = ItemsMovement::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
-    public static function getLabel(): string
-    {
-        return 'سجل الحركات'; // Custom sidebar name
-    }
+    protected static ?string $navigationLabel = 'سجل الحركات';
+    // protected static ?string $navigationGroup = 'البيانات';
+
+
+
+
+    // public static function getLabel(): string
+    // {
+    //     return 'سجل الحركات'; // Custom sidebar name
+    // }
 
     public static function form(Forms\Form $form): Forms\Form
     {

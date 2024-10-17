@@ -1,6 +1,38 @@
 <?php
 
+use App\Filament\Resources\ItemMovementResource;
+use App\Filament\Resources\ItemResource;
+
 return [
+    'navigation' => [
+        'items' => [
+            'Content' => [
+                // Group title
+                'posts' => ItemResource::class,
+                'pages' => ItemResource::class,
+            ],
+            'Settings' => [
+                // Another group
+                'users' => ItemResource::class,
+                'roles' => ItemResource::class,
+            ],
+        ],
+    ],
+    
+'navigation' => [
+'items' => [
+        'Content' => [
+            'posts' => ItemResource::class,
+            'pages' => ItemMovementResource::class,
+        ],
+        'Settings' => [
+            'users' => ItemResource::class,
+        ],
+    ],
+],
+
+    
+
 
     /*
     |--------------------------------------------------------------------------
@@ -85,5 +117,16 @@ return [
     */
 
     'livewire_loading_delay' => 'default',
+
+    'navigation' => [
+        'items' => [
+            'Content' => [
+                'label' => 'Content Management',
+                'icon' => 'heroicon-o-document',
+                'posts' => ItemResource::class,
+                'pages' => ItemMovementResource::class,
+            ],
+        ],
+    ],
 
 ];
